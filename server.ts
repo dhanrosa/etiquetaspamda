@@ -1,7 +1,7 @@
 import express from "express";
 import path from "path";
 import { createServer as createViteServer } from "vite";
-import crypto from "crypto";
+import { createHash } from "crypto";
 import {
   labelaryService,
   LabelaryServiceError,
@@ -59,7 +59,7 @@ app.post("/api/render", async (req, res) => {
       });
     }
 
-    const zplHash = crypto.createHash("sha1").update(String(zpl)).digest("hex").slice(0, 12);
+    const zplHash = createHash("sha1").update(String(zpl)).digest("hex").slice(0, 12);
 
     console.log(
       `[render] Etiqueta #${typeof labelIndex === "number" ? labelIndex + 1 : "?"} recebida. ` +

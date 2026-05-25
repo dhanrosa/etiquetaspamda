@@ -1,10 +1,14 @@
-import crypto from "crypto";
+import { createHash } from "crypto";
 import {
   labelaryService,
   LabelaryServiceError,
   LABELARY_MAX_LABEL_DIMENSION_INCHES,
   LABELARY_MAX_REQUEST_BYTES,
 } from "../src/services/labelaryService";
+
+export const config = {
+  maxDuration: 60,
+};
 
 const parseBody = (body: unknown) => {
   if (typeof body === "string") {
@@ -56,7 +60,7 @@ export default async function handler(req: any, res: any) {
       });
     }
 
-    const zplHash = crypto.createHash("sha1").update(String(zpl)).digest("hex").slice(0, 12);
+    const zplHash = createHash("sha1").update(String(zpl)).digest("hex").slice(0, 12);
     console.log(
       `[render:serverless] Etiqueta #${typeof labelIndex === "number" ? labelIndex + 1 : "?"} recebida. ` +
       `ZPL hash: ${zplHash}. Tamanho: ${zplSizeBytes} bytes.`

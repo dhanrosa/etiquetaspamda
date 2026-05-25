@@ -196,20 +196,23 @@ export default function App() {
             imageUrl
           });
         } else {
-          // If our server returned an error response JSON, parse it
           let errMsg = 'Erro na resposta do servidor.';
+          let errJson: any = null;
+          const errorBody = await response.text();
+
           try {
-            const errJson = await response.json();
-            errMsg = errJson.error || errMsg;
-            if (errJson.rateLimited) {
-              rateLimitWasDetected = true;
-              setFeedbackMsg({
-                type: 'success',
-                text: 'Muitas etiquetas enviadas simultaneamente. Processando em fila para evitar bloqueio do Labelary.'
-              });
-            }
+            errJson = errorBody ? JSON.parse(errorBody) : null;
           } catch {
-            errMsg = await response.text() || errMsg;
+            errJson = null;
+          }
+
+          errMsg = errJson?.error || errorBody || errMsg;
+          if (errJson?.rateLimited) {
+            rateLimitWasDetected = true;
+            setFeedbackMsg({
+              type: 'success',
+              text: 'Muitas etiquetas enviadas simultaneamente. Processando em fila para evitar bloqueio do Labelary.'
+            });
           }
 
           updatedLabels.push({

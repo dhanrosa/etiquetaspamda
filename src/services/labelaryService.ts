@@ -1,4 +1,4 @@
-import crypto from "crypto";
+import { createHash } from "crypto";
 
 type LabelaryRenderRequest = {
   dpmm: number;
@@ -204,7 +204,7 @@ class LabelaryService {
   }
 
   private async callLabelary(request: LabelaryRenderRequest, job: QueueJob) {
-    const zplHash = crypto.createHash("sha1").update(request.zpl).digest("hex").slice(0, 12);
+    const zplHash = createHash("sha1").update(request.zpl).digest("hex").slice(0, 12);
     const labelIndex = Math.max(0, request.labelaryIndex ?? request.labelIndex ?? 0);
     const labelaryUrl = `https://api.labelary.com/v1/printers/${request.dpmm}dpmm/labels/${request.width}x${request.height}/${labelIndex}/`;
     const controller = new AbortController();
