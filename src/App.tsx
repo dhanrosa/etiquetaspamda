@@ -28,6 +28,7 @@ export default function App() {
   const [zplCode, setZplCode] = useState<string>('');
   const [labels, setLabels] = useState<LabelData[]>([]);
   const objectUrlsRef = useRef<string[]>([]);
+  const isRenderingRef = useRef<boolean>(false);
   const [config, setConfig] = useState<RenderConfig>({
     dpmm: 8, // Standard 203 DPI for thermal printers
     width: 4,  // 4 inches (~10cm)
@@ -121,6 +122,11 @@ export default function App() {
 
   // Triggers rendering calls to the Labelary API
   const updatePreview = async () => {
+    if (isRenderingRef.current) {
+      setFeedbackMsg({ type: 'success', text: 'Processamento em andamento. As etiquetas ja estao na fila.' });
+      return;
+    }
+
     const ZplBlocks = splitZpl(zplCode);
     if (ZplBlocks.length === 0) {
       setFeedbackMsg({ type: 'err', text: 'Por favor, insira ou cole seu código ZPL primeiro.' });
@@ -135,6 +141,7 @@ export default function App() {
       return;
     }
 
+    isRenderingRef.current = true;
     setIsUpdating(true);
     setRenderProgress({ done: 0, total: ZplBlocks.length });
     setFeedbackMsg({ type: 'success', text: 'Processando etiquetas...' });
@@ -239,6 +246,7 @@ export default function App() {
     }
 
     setIsUpdating(false);
+    isRenderingRef.current = false;
     const successfullyRendered = updatedLabels.filter(l => l.status === 'success').length;
     setFeedbackMsg({
       type: rateLimitWasDetected ? 'success' : 'success',
