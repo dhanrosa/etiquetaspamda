@@ -22,6 +22,7 @@ import { EmptyState } from './components/EmptyState';
 import { SAMPLE_ZPL } from './utils/sample';
 
 const LABELARY_FREE_MAX_LABELS_PER_REQUEST = 50;
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || '';
 
 export default function App() {
   const [zplCode, setZplCode] = useState<string>('');
@@ -159,7 +160,7 @@ export default function App() {
     // Fire rendering calls
     for (const item of initialLabelsList) {
       try {
-        const response = await fetch(`/api/render?label=${item.index}&run=${renderRunId}`, {
+        const response = await fetch(`${API_BASE_URL}/api/render?label=${item.index}&run=${renderRunId}`, {
           method: 'POST',
           cache: 'no-store',
           headers: {
@@ -219,10 +220,13 @@ export default function App() {
         }
       } catch (error: any) {
         console.error('Falha de rede ao contatar o Labelary:', error);
+        const errMsg = API_BASE_URL
+          ? `Nao foi possivel acessar a API em ${API_BASE_URL}. Verifique se o servidor Node esta online e liberado para este dominio.`
+          : 'Nao foi possivel acessar /api/render. Se o site foi publicado em hospedagem estatica, suba tambem o servidor Node ou configure VITE_API_BASE_URL.';
         updatedLabels.push({
           ...item,
           status: 'error',
-          errorMessage: 'Erro de rede ou conexão CORS. Verifique seu sinal de internet.'
+          errorMessage: errMsg
         });
       }
 
