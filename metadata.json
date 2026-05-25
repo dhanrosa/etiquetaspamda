@@ -1,0 +1,6 @@
+{
+  "name": "Conversor ZPL para PDF",
+  "description": "Converta códigos ZPL para PDF prontos para impressão em etiquetas térmicas de marketplace no formato vertical 10x15cm.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

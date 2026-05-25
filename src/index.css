@@ -1,0 +1,107 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Plus Jakarta Sans", "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+}
+
+/* Base resets in case of any printing defaults */
+@media print {
+  @page {
+    size: 100mm 150mm;
+    margin: 0;
+  }
+
+  /* hide anything that has the .no-print helper utility */
+  .no-print, 
+  header, 
+  footer, 
+  main, 
+  aside, 
+  #toast-notification, 
+  .fixed,
+  button {
+    display: none !important;
+  }
+
+  #print-media-section {
+    display: block !important;
+    width: 100mm !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    background: #ffffff !important;
+  }
+
+  body, html, #root, #app-root-container {
+    background: #ffffff !important;
+    color: #000000 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    width: 100mm !important;
+    height: 150mm !important;
+  }
+
+  /* Each label print wrapper */
+  .print-page {
+    page-break-after: always !important;
+    page-break-inside: avoid !important;
+    width: 100mm !important;
+    height: 150mm !important;
+    box-sizing: border-box !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: hidden !important;
+    background-color: #ffffff !important;
+  }
+
+  /* Precise image size for thermal printing in 100x150 mm labels */
+  .print-image {
+    width: 100mm !important;
+    height: 150mm !important;
+    max-width: 100% !important;
+    max-height: 100% !important;
+    object-fit: contain !important;
+    display: block !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+}
+
+/* CSS Animations for alerts and panels */
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-slide-in {
+  animation: slideIn 0.22s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* custom scrollbar for label grids */
+#labels-scroll-view::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+#labels-scroll-view::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+#labels-scroll-view::-webkit-scrollbar-thumb {
+  background-color: rgba(16, 185, 129, 0.2);
+  border-radius: 9999px;
+}
+
+#labels-scroll-view::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(16, 185, 129, 0.4);
+}
